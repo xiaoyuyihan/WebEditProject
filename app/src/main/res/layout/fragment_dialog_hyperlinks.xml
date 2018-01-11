@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:text="超链接"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:id="@+id/dialog_hyperlinks_top" />
+
+    <LinearLayout
+        android:id="@+id/dialog_hyperlinks_linear_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/DialogHyperlinksLinearLayoutStyle"
+        android:layout_below="@id/dialog_hyperlinks_top">
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="标签"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:hint="输入超链接名称"
+            android:layout_weight="8"
+            android:id="@+id/dialog_hyperlinks_key"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog_hyperlinks_linear_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/DialogHyperlinksLinearLayoutStyle"
+        android:layout_below="@+id/dialog_hyperlinks_linear_1">
+
+        <TextView
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="超链接"/>
+
+        <EditText
+            android:id="@+id/dialog_hyperlinks_value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:layout_weight="8"
+            android:maxLines="1"
+            android:hint="输入超链接"/>
+    </LinearLayout>
+
+    <TextView
+        android:text="确定"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_hyperlinks_linear_2"
+        style="@style/DialogHyperlinksButtonStyle"
+        android:textColor="@color/colorPrimary"
+        android:id="@+id/dialog_hyperlinks_subject" />
+
+    <TextView
+        android:text="返回"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_hyperlinks_subject"
+        style="@style/DialogHyperlinksButtonStyle"
+        android:paddingBottom="6dp"
+        android:id="@+id/dialog_hyperlinks_back" />
+</RelativeLayout>

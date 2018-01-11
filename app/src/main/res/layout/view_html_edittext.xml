@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_txteditor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="12dp"
+        android:scrollbars="none"
+        android:background="@drawable/shape_html_top">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/view_html_edit"
+                android:layout_width="match_parent"
+                android:layout_height="480dp"
+                android:padding="8dp"
+                android:gravity="top|left"
+                android:background="@null"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical">
+        <!-- bold-->
+        <LinearLayout
+            android:id="@+id/view_html_bottom_font_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"
+            android:background="@drawable/shape_html_bottom_select">
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_style_bold"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_border_selected" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_style_italics"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_inter_selected" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_style_underline"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_line" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/view_html_bottom_font_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"
+            android:background="@drawable/shape_html_bottom_select">
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_size_add"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_add" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_size_default"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_selected" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_size_sub"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_sub" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/view_html_bottom_font_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"
+            android:background="@drawable/shape_html_bottom_select">
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_layout_left"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_left" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_layout_center"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_center_selected" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_font_layout_right"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_right" />
+
+        </LinearLayout>
+        <HorizontalScrollView
+            android:id="@+id/view_html_bottom_font_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_html_bottom_select"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone"
+            android:scrollbars="none"
+            android:gravity="center"
+            android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_white"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_white" />
+
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_black"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_black" />
+
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_black_gray"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_blackgray" />
+
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_blue"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_blue" />
+
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_gray"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_gray" />
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_green"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_green" />
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_red"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_red" />
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_yellow"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_yellow" />
+                <ImageView
+                    android:id="@+id/view_html_bottom_font_color_violet"
+                    style="@style/HtmlEditBottomImage"
+                    android:src="@drawable/font_color_violet" />
+            </LinearLayout>
+        </HorizontalScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_html_bottom"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/view_html_bottom_hyperlink"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_linked" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_style"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_border" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_size"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_unselected" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_position"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_font_center" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_color"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_color_selected" />
+
+            <ImageView
+                android:id="@+id/view_html_bottom_back"
+                style="@style/HtmlEditBottomImage"
+                android:src="@drawable/ic_close"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/view_html_bottom_subject"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        android:src="@drawable/ic_subject"/>
+</RelativeLayout>

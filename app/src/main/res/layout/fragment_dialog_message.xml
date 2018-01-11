@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_html_top"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:layout_weight="3">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_warning"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="23dp"
+            android:id="@+id/imageView" />
+
+        <TextView
+            android:text="您确定要删除该段落吗，不可恢复性操作！"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_marginLeft="4dp"
+            android:padding="18dp"
+            android:textSize="16sp"
+            android:id="@+id/dialog_message_text" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7">
+        <Button
+            android:id="@+id/dialog_message_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_html_bottom_left"
+            android:textColor="@color/white"
+            android:text="取消"/>
+        <Button
+            android:id="@+id/dialog_message_sure"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_html_bottom_right"
+            android:textColor="@color/white"
+            android:text="确定"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.camera.CameraActivity;
 import com.main.BaseActivity;
 import com.main.bean.EditBean;
 import com.provider.utils.AudioBean;
@@ -224,11 +225,8 @@ public class ProviderActivity extends BaseActivity implements View.OnClickListen
                     break;
                 }
             }
-
             if (isAllGranted) {
-                // 如果所有的权限都授予了, 则执行备份代码
                 ContentProviderUtils.getInstance(this).setRecentSize(mTypeNumber).setReadListener(this).subjectType(mType);
-
             } else {
                 // 弹出对话框告诉用户需要权限的原因, 并引导用户去应用权限管理中手动打开权限按钮
                 openAppDetails();
@@ -265,9 +263,8 @@ public class ProviderActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setResultData() {
-        Intent localIntent = new Intent();
-        localIntent.putParcelableArrayListExtra(DATA_KEY, getEditBeanList());
-        setResult(ProviderActivity.RESULT_CODE, localIntent);
+        IntentBean.getInstance().setChecks(getEditBeanList());
+        setResult(ProviderActivity.RESULT_CODE);
         finish();
     }
 
@@ -303,8 +300,18 @@ public class ProviderActivity extends BaseActivity implements View.OnClickListen
                     localFragmentTransaction.replace(R.id.provider_fragment,
                             localParticularsFragment,DIRECTORY)
                             .commit();
-                } else
+                } else{
+                    //返回 拍摄页面
+                    Intent intent=new Intent("com.provider.ACTION_PROVIDER");
+                    if (mType== ContentProviderUtils.TYPE_PHOTO){
+                        intent.putExtra(CameraActivity.CAMERA_OPEN_TYPE,CameraActivity.CAMERA_PICTURE);
+                    }else if (mType== ContentProviderUtils.TYPE_VIDEO){
+                        intent.putExtra(CameraActivity.CAMERA_OPEN_TYPE,CameraActivity.CAMERA_VIDEO);
+                    }
+                    startActivityForResult(intent,ProviderActivity.RESULT_CODE);
                     finish();
+                }
+
                 break;
             case R.id.provider_top_subject:
                 setResultData();
@@ -319,8 +326,8 @@ public class ProviderActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    public ArrayList<? extends Parcelable> getEditBeanList() {
-        ArrayList<EditBean> beanList=new ArrayList<>();
+    public ArrayList<Parcelable> getEditBeanList() {
+        ArrayList<Parcelable> beanList=new ArrayList<>();
         for (Parcelable p:mCheckPathList){
             if (p instanceof ImageBean){
                 beanList.add(imageBeanToEditBean(p));

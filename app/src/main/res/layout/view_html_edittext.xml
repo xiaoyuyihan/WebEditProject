@@ -12,7 +12,7 @@
         android:background="@drawable/shape_html_top">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/view_html_edit"
                 android:layout_width="match_parent"
@@ -195,7 +195,7 @@
             <ImageView
                 android:id="@+id/view_html_bottom_back"
                 style="@style/HtmlEditBottomImage"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_camera_close"/>
         </LinearLayout>
     </LinearLayout>
 

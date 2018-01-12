@@ -65,7 +65,11 @@ public class ContentProviderUtils {
     private void getAudioUrls() {
         Cursor localCursor = getContentCursor(audioUri, null, null, null, "_id DESC");
         while (localCursor.moveToNext()) {
-            AudioBean localAudioBean = new AudioBean(localCursor.getInt(localCursor.getColumnIndex("_id")), localCursor.getString(localCursor.getColumnIndex("_data")), localCursor.getString(localCursor.getColumnIndex("_display_name")), localCursor.getString(localCursor.getColumnIndex("duration")));
+            AudioBean localAudioBean = new AudioBean(localCursor.getInt(
+                    localCursor.getColumnIndex("_id")),
+                    localCursor.getString(localCursor.getColumnIndex("_data")),
+                    localCursor.getString(localCursor.getColumnIndex("_display_name")),
+                    localCursor.getString(localCursor.getColumnIndex("duration")));
             if (mAudioUrls.containsKey(FLAG_RECENT)&&mAudioUrls.get(FLAG_RECENT).size()<mRecentSize){
                 mAudioUrls.get(FLAG_RECENT).add(localAudioBean);
             }else if (!mAudioUrls.containsKey(FLAG_RECENT)){
@@ -94,7 +98,9 @@ public class ContentProviderUtils {
     private void getPhotoUrls() {
         Cursor localCursor = getContentCursor(imageUri, null, "mime_type=? or mime_type=?", new String[]{"image/jpeg", "image/png"}, "_id DESC");
         while (localCursor.moveToNext()) {
-            ImageBean localImageBean = new ImageBean(localCursor.getInt(localCursor.getColumnIndex("_id")), localCursor.getString(localCursor.getColumnIndex("_data")), localCursor.getString(localCursor.getColumnIndex("_display_name")));
+            ImageBean localImageBean = new ImageBean(localCursor.getInt(localCursor.getColumnIndex("_id")),
+                    localCursor.getString(localCursor.getColumnIndex("_data")),
+                    localCursor.getString(localCursor.getColumnIndex("_display_name")));
             if (mImageUrls.containsKey(FLAG_RECENT)&&mImageUrls.get(FLAG_RECENT).size()<mRecentSize){
                 mImageUrls.get(FLAG_RECENT).add(localImageBean);
             }else if (!mImageUrls.containsKey(FLAG_RECENT)){

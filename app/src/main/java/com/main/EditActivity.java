@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.main.bean.EditBean;
 import com.provider.utils.ContentProviderUtils;
+import com.provider.utils.IntentBean;
 import com.provider.view.ProviderActivity;
 import com.service.MediaService;
 import com.utils.MessageDialogFragment;
@@ -150,9 +152,10 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == 1 && data != null) {
             mEditBeanList.add((EditBean) data.getParcelableExtra(HtmlEditActivity.HTML_EDIT_DATA_KEY));
-        } else if (requestCode == 2 && data != null) {
-            ArrayList<EditBean> d = data.getParcelableArrayListExtra(ProviderActivity.DATA_KEY);
+        } else if (requestCode == 2) {
+            ArrayList d = IntentBean.getInstance().getChecks();
             mEditBeanList.addAll(d);
+            IntentBean.getInstance().getChecks().clear();
         }
         mEditAdapter.notifyDataSetChanged();
         super.onActivityResult(requestCode, resultCode, data);
@@ -189,20 +192,24 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
 
     @OnClick({R.id.edit_common_menu_photo, R.id.edit_common_menu_video, R.id.edit_common_menu_audio})
     public void onProviderActivity(View v) {
-        Intent intent = new Intent(this, ProviderActivity.class);
+        Intent intent=null;
         switch (v.getId()) {
             case R.id.edit_common_menu_audio:
                 intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_AUDIO);
                 break;
             case R.id.edit_common_menu_photo:
+                intent = new Intent("com.camera.ACTION_START_CAMERA");
+                intent.putExtra("CAMERA_OPEN_TYPE",1);
                 intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_PHOTO);
                 break;
             case R.id.edit_common_menu_video:
+                intent = new Intent("com.camera.ACTION_START_CAMERA");
+                intent.putExtra("CAMERA_OPEN_TYPE",2);
                 intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_VIDEO);
                 break;
         }
+        startActivityForResult(intent,2);
         mFloatingActionsMenu.performClick();
-        startActivityForResult(intent, 2);
     }
 
     @OnClick(R.id.edit_common_menu_text)

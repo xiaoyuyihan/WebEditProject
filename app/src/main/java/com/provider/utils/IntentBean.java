@@ -18,8 +18,8 @@ public class IntentBean {
         return bean;
     }
 
-    private ArrayList<Parcelable> mData;
-    private ArrayList<Parcelable> mChecks;
+    private ArrayList<Parcelable> mData=new ArrayList<>();
+    private ArrayList<Parcelable> mChecks=new ArrayList<>();
     private int position;
 
     public ArrayList<Parcelable> getData() {
@@ -50,7 +50,6 @@ public class IntentBean {
     }
 
     public IntentBean addCheck(Parcelable check){
-        mChecks=new ArrayList<Parcelable>();
         mChecks.add(check);
         return bean;
     }

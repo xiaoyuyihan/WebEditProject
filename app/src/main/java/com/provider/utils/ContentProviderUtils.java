@@ -70,6 +70,10 @@ public class ContentProviderUtils {
                     localCursor.getString(localCursor.getColumnIndex("_data")),
                     localCursor.getString(localCursor.getColumnIndex("_display_name")),
                     localCursor.getString(localCursor.getColumnIndex("duration")));
+           //
+            if (Long.valueOf(localAudioBean.getDuration())<1000){
+                continue;
+            }
             if (mAudioUrls.containsKey(FLAG_RECENT)&&mAudioUrls.get(FLAG_RECENT).size()<mRecentSize){
                 mAudioUrls.get(FLAG_RECENT).add(localAudioBean);
             }else if (!mAudioUrls.containsKey(FLAG_RECENT)){
@@ -123,6 +127,9 @@ public class ContentProviderUtils {
         Cursor localCursor = getContentCursor(videoUri, null, null, null, "_id DESC");
         while (localCursor.moveToNext()) {
             VideoBean localVideoBean = new VideoBean(localCursor.getInt(localCursor.getColumnIndex("_id")), localCursor.getString(localCursor.getColumnIndex("_data")), localCursor.getString(localCursor.getColumnIndex("_display_name")), localCursor.getString(localCursor.getColumnIndex("duration")));
+            if (Long.valueOf(localVideoBean.getDuration())<1000){
+                continue;
+            }
             if (mVideoUrls.containsKey(FLAG_RECENT)&&mVideoUrls.get(FLAG_RECENT).size()<mRecentSize){
                 mVideoUrls.get(FLAG_RECENT).add(localVideoBean);
             }else if (!mVideoUrls.containsKey(FLAG_RECENT)){

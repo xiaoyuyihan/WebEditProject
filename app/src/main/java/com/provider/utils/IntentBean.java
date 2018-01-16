@@ -40,6 +40,11 @@ public class IntentBean {
         return bean;
     }
 
+    public IntentBean setCheck(Parcelable mCheck){
+        this.mChecks.add(mCheck);
+        return bean;
+    }
+
     public int getPosition() {
         return position;
     }

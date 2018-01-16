@@ -271,6 +271,8 @@ public class ParticularActivity extends BaseActivity implements View.OnClickList
             case R.id.view_dialog_provider_audio_subject:
             case R.id.provider_top_subject:
                 mChecks.add(mData.get(mPosition));
+                mMediaPlayer.stop();
+                mMediaPlayer.release();
                 setResult();
         }
     }

@@ -302,13 +302,16 @@ public class ProviderActivity extends BaseActivity implements View.OnClickListen
                             .commit();
                 } else{
                     //返回 拍摄页面
-                    Intent intent=new Intent("com.provider.ACTION_PROVIDER");
+                    Intent intent=new Intent("com.camera.ACTION_START_CAMERA");
                     if (mType== ContentProviderUtils.TYPE_PHOTO){
-                        intent.putExtra(CameraActivity.CAMERA_OPEN_TYPE,CameraActivity.CAMERA_PICTURE);
+                        intent.putExtra(CameraActivity.CAMERA_OPEN_TYPE,ContentProviderUtils.TYPE_PHOTO);
+                        startActivityForResult(intent,ProviderActivity.RESULT_CODE);
                     }else if (mType== ContentProviderUtils.TYPE_VIDEO){
-                        intent.putExtra(CameraActivity.CAMERA_OPEN_TYPE,CameraActivity.CAMERA_VIDEO);
+                        intent.putExtra(CameraActivity.CAMERA_OPEN_TYPE,ContentProviderUtils.TYPE_VIDEO);
+                        startActivityForResult(intent,ProviderActivity.RESULT_CODE);
+                    }else if (mType == ContentProviderUtils.TYPE_AUDIO){
+
                     }
-                    startActivityForResult(intent,ProviderActivity.RESULT_CODE);
                     finish();
                 }
 

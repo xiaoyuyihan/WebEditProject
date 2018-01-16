@@ -47,6 +47,7 @@ public class MessageDialogFragment extends DialogFragment {
         super.onResume();
         getDialog().getWindow().getDecorView().setBackground(getResources().getDrawable(R.drawable.shape_html_top));
         getDialog().getWindow().getDecorView().setPadding(0,0,0,0);
+        getDialog().setCancelable(false);
     }
 
     @OnClick(R.id.dialog_message_cancel)

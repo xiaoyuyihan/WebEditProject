@@ -41,8 +41,6 @@ public class CameraActivity extends AppCompatActivity implements
         Camera2Utils.CameraCompleteCallback {
 
     public static final String CAMERA_OPEN_TYPE = "CAMERA_OPEN_TYPE";
-    public static final int CAMERA_PICTURE = 1;
-    public static final int CAMERA_VIDEO = 2;
 
     @BindView(R.id.auto_fit_texture)
     AutoFitTextureView mAutoFitTexture;
@@ -83,7 +81,7 @@ public class CameraActivity extends AppCompatActivity implements
             Log.d("CameraActivity", "onSurfaceTextureUpdated");
         }
     };
-    private boolean isFocusing=false;
+    private boolean isFocusing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +89,7 @@ public class CameraActivity extends AppCompatActivity implements
         //setWindowBar();
         setContentView(R.layout.activity_camera);
         ButterKnife.bind(this);
-        mMainLayout=(RelativeLayout)findViewById(R.id.camera_layout);
+        mMainLayout = (RelativeLayout) findViewById(R.id.camera_layout);
         mMainHandler = new Handler();
         mType = getIntent().getExtras().getInt(CAMERA_OPEN_TYPE);
     }
@@ -106,7 +104,7 @@ public class CameraActivity extends AppCompatActivity implements
         paint.setStrokeWidth(2f);
         Canvas canvas = surfaceHolder.lockCanvas();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR); //清楚掉上一次的画框。
-        if (isFocusing){
+        if (isFocusing) {
             canvas.drawBitmap(mConversions, x - mConversions.getWidth() / 2,
                     y - mConversions.getHeight() / 2, paint);
         }
@@ -157,16 +155,16 @@ public class CameraActivity extends AppCompatActivity implements
                 final float downY = event.getY();
                 if (event.getAction() == MotionEvent.ACTION_DOWN && Math.abs(downX) < mAutoFitTexture.getWidth()
                         && Math.abs(downY) < mAutoFitTexture.getHeight()) {
-                    isFocusing=!isFocusing;
+                    isFocusing = !isFocusing;
                     drawFocal(downX, downY);
                     mCameraUtils.setRegions(downX, downY);
                     mMainHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            isFocusing=!isFocusing;
+                            isFocusing = !isFocusing;
                             drawFocal(downX, downY);
                         }
-                    },3000);
+                    }, 3000);
                 }
                 return false;
             }
@@ -174,7 +172,7 @@ public class CameraActivity extends AppCompatActivity implements
         mSurfaceView.setZOrderOnTop(true);//处于顶层
         mSurfaceView.getHolder().setFormat(PixelFormat.TRANSPARENT);//设置surface为透明
         mConversions = BitmapFactory.decodeResource(getResources(), R.drawable.ic_focal_point);
-        if (mType == CAMERA_PICTURE) {
+        if (mType == ContentProviderUtils.TYPE_PHOTO) {
             mProviderView.setImageDrawable(getDrawable(R.drawable.ic_photo_check));
         } else {
             mProviderView.setImageDrawable(getDrawable(R.drawable.ic_video_check));
@@ -200,7 +198,7 @@ public class CameraActivity extends AppCompatActivity implements
 
     @OnClick(R.id.camera_take)
     public void onCameraTake(View view) {
-        if (mType == CameraActivity.CAMERA_PICTURE) {
+        if (mType == ContentProviderUtils.TYPE_PHOTO) {
             mCameraUtils.takePicture();
         } else {
             if (!mCameraUtils.isRecordingVideo()) {
@@ -217,7 +215,7 @@ public class CameraActivity extends AppCompatActivity implements
 
     private void startProviderActivity() {
         Intent intent = new Intent("com.provider.ACTION_PROVIDER");
-        if (mType == CAMERA_PICTURE) {
+        if (mType == ContentProviderUtils.TYPE_PHOTO) {
             intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_PHOTO);
         } else {
             intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_VIDEO);
@@ -231,9 +229,11 @@ public class CameraActivity extends AppCompatActivity implements
         mMainHandler.post(new Runnable() {
             @Override
             public void run() {
-                if (mType == CAMERA_PICTURE) {
-
-                }
+                Intent intent = new Intent(CameraActivity.this, CameraBrowseActivity.class);
+                intent.putExtra(CameraBrowseActivity.CAMERA_IMAGE_TYPE, mType);
+                intent.putExtra(CameraBrowseActivity.CAMERA_IMAGE_PATH, file);
+                startActivity(intent);
+                finish();
             }
         });
     }

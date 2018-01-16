@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ import butterknife.OnClick;
  * Created by lw on 2018/1/2.
  */
 
-public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnClickViewHolder.OnBroadcastReceiverListener{
+public class EditActivity extends BaseActivity implements OnClickViewHolder, OnClickViewHolder.OnBroadcastReceiverListener {
     @BindView(R.id.edit_common_top_back)
     TextView mBackView;
     @BindView(R.id.edit_common_top_next)
@@ -75,11 +76,11 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
     private ArrayList<EditBean> mEditBeanList = new ArrayList<>();
     private EditAdapter mEditAdapter;
     private MediaService mediaService;
-    private DurationBroadcastReceiver broadcastReceiver=new DurationBroadcastReceiver(this);
+    private DurationBroadcastReceiver broadcastReceiver = new DurationBroadcastReceiver(this);
 
     private SeekBar mViewHolderBar;
     private TextView mAudioTextView;
-    private Handler mMainHandler=new Handler();
+    private Handler mMainHandler = new Handler();
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -156,6 +157,13 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
             ArrayList d = IntentBean.getInstance().getChecks();
             mEditBeanList.addAll(d);
             IntentBean.getInstance().getChecks().clear();
+        } else if (requestCode == 3 && data != null) {
+            EditBean editBean = (EditBean) data.getParcelableExtra(HtmlEditActivity.HTML_EDIT_DATA_KEY);
+            int position = data.getIntExtra(HtmlEditActivity.HTML_EDIT_POSITION_KEY, -1);
+            if (position != -1) {
+                mEditBeanList.remove(position);
+                mEditBeanList.add(position, editBean);
+            }
         }
         mEditAdapter.notifyDataSetChanged();
         super.onActivityResult(requestCode, resultCode, data);
@@ -192,23 +200,24 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
 
     @OnClick({R.id.edit_common_menu_photo, R.id.edit_common_menu_video, R.id.edit_common_menu_audio})
     public void onProviderActivity(View v) {
-        Intent intent=null;
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.edit_common_menu_audio:
+                intent = new Intent("com.provider.ACTION_PROVIDER");
                 intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_AUDIO);
                 break;
             case R.id.edit_common_menu_photo:
                 intent = new Intent("com.camera.ACTION_START_CAMERA");
-                intent.putExtra("CAMERA_OPEN_TYPE",1);
+                intent.putExtra("CAMERA_OPEN_TYPE", ContentProviderUtils.TYPE_PHOTO);
                 intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_PHOTO);
                 break;
             case R.id.edit_common_menu_video:
                 intent = new Intent("com.camera.ACTION_START_CAMERA");
-                intent.putExtra("CAMERA_OPEN_TYPE",2);
+                intent.putExtra("CAMERA_OPEN_TYPE", ContentProviderUtils.TYPE_VIDEO);
                 intent.putExtra(ProviderActivity.TYPE_KEY, ContentProviderUtils.TYPE_VIDEO);
                 break;
         }
-        startActivityForResult(intent,2);
+        startActivityForResult(intent, 2);
         mFloatingActionsMenu.performClick();
     }
 
@@ -225,18 +234,19 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
 
     @Override
     public void onClick(RecyclerView.ViewHolder holder) {
-        if (holder instanceof AudioViewHolder){
-            mViewHolderBar=((AudioViewHolder)holder).getSeekBar();
-            mAudioTextView=((AudioViewHolder)holder).getCurrentTime();
+        if (holder instanceof AudioViewHolder) {
+            mViewHolderBar = ((AudioViewHolder) holder).getSeekBar();
+            mAudioTextView = ((AudioViewHolder) holder).getCurrentTime();
         }
     }
 
     @Override
     public void onReceiver(Intent intent) {
-        mViewHolderBar.setMax(intent.getIntExtra(MediaService.DATA_AUDIO_DURATION,0));
+        mViewHolderBar.setMax(intent.getIntExtra(MediaService.DATA_AUDIO_DURATION, 0));
         TimerTask mTimerTask = new TimerTask() {
-            @Override public void run() {
-                final int current=mediaService.getMediaPlayer().getCurrentPosition();
+            @Override
+            public void run() {
+                final int current = mediaService.getMediaPlayer().getCurrentPosition();
                 mViewHolderBar.setProgress(current);
                 mViewHolderBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
@@ -272,7 +282,7 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
 
         public EditAdapter(OnClickViewHolder onClickViewHolder) {
             mInflater = LayoutInflater.from(EditActivity.this);
-            this.onClickViewHolder=onClickViewHolder;
+            this.onClickViewHolder = onClickViewHolder;
         }
 
         @Override
@@ -297,12 +307,23 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+            Log.d("EditAdapter", "onBindViewHolder");
             final EditBean currentBean = mEditBeanList.get(position);
             if (holder instanceof TextViewHolder) {
                 TextViewHolder textViewHolder = (TextViewHolder) holder;
                 textViewHolder.setHtml(currentBean.getHTML5());
                 textViewHolder.setHtmlSize(currentBean.getHtmlTextSize());
                 textViewHolder.setGravity(currentBean.getGravity());
+                textViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(EditActivity.this, HtmlEditActivity.class);
+                        intent.putExtra(HtmlEditActivity.HTML_EDIT_TYPE_KEY,HtmlEditActivity.HTML_EDIT_TYPE_REWRITE);
+                        intent.putExtra(HtmlEditActivity.HTML_EDIT_DATA_KEY,currentBean);
+                        intent.putExtra(HtmlEditActivity.HTML_EDIT_POSITION_KEY,position);
+                        startActivityForResult(intent, 3);
+                    }
+                });
             } else if (holder instanceof AudioViewHolder) {
                 AudioViewHolder audioViewHolder = (AudioViewHolder) holder;
                 audioViewHolder.setTopName(currentBean.getProviderName());
@@ -435,8 +456,8 @@ public class EditActivity extends BaseActivity implements OnClickViewHolder ,OnC
 
         private OnBroadcastReceiverListener onBroadcastReceiverListener;
 
-        public DurationBroadcastReceiver(OnBroadcastReceiverListener onBroadcastReceiverListener){
-            this.onBroadcastReceiverListener= onBroadcastReceiverListener;
+        public DurationBroadcastReceiver(OnBroadcastReceiverListener onBroadcastReceiverListener) {
+            this.onBroadcastReceiverListener = onBroadcastReceiverListener;
         }
 
         @Override

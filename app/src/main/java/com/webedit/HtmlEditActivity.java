@@ -25,9 +25,10 @@ public class HtmlEditActivity extends BaseActivity implements HWebEditView.OnEnu
 
     public static String HTML_EDIT_TYPE_KEY = "HTML_EDIT_TYPE_KEY";           //类型
     public static String HTML_EDIT_DATA_KEY = "HTML_EDIT_DATA_KEY";           //数据
-    //public static String HTML_EDIT_ENMU_KEY="HTML_EDIT_ENMU_KEY";
+    public static String HTML_EDIT_POSITION_KEY="HTML_EDIT_POSITION_KEY";             //修改位置
 
     private int resultCode;
+    private int position;
     private EditBean mEditBean;
 
     @BindView(R.id.html_edit_HView)
@@ -42,6 +43,7 @@ public class HtmlEditActivity extends BaseActivity implements HWebEditView.OnEnu
         if (resultCode != HTML_EDIT_TYPE_FIRST) {
             mEditBean = getIntent().getParcelableExtra(HTML_EDIT_DATA_KEY);
             mHWebEditView.upDataView(mEditBean.getHtmlTextBeanArrayList(), mEditBean.getEnumArrayList());
+            position = getIntent().getIntExtra(HTML_EDIT_POSITION_KEY,-1);
         }
         mHWebEditView.setOnEnumClickListener(this);
     }
@@ -82,6 +84,7 @@ public class HtmlEditActivity extends BaseActivity implements HWebEditView.OnEnu
                 .setHTML5(html);
         Intent intent = new Intent();
         intent.putExtra(HTML_EDIT_DATA_KEY, editBean);
+        intent.putExtra(HTML_EDIT_POSITION_KEY,position);
         setResult(resultCode, intent);
         finish();
     }

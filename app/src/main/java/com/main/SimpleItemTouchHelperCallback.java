@@ -1,12 +1,17 @@
 package com.main;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.nfc.Tag;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
@@ -14,16 +19,16 @@ import java.util.ArrayList;
  * Created by lw on 2017/2/21.
  */
 
-public class SimpleItemTouchHelperCallback<T extends RecyclerView.Adapter,V> extends ItemTouchHelper.Callback {
+public class SimpleItemTouchHelperCallback<T extends RecyclerView.Adapter, V> extends ItemTouchHelper.Callback {
 
     private T mAdapter;
     private ArrayList mData;
     private SwipeStateAlterHelper mSwipeState;
     private float olddX = 0;
 
-    public SimpleItemTouchHelperCallback(T mAdapter,ArrayList mData) {
+    public SimpleItemTouchHelperCallback(T mAdapter, ArrayList mData) {
         this.mAdapter = mAdapter;
-        this.mData=mData;
+        this.mData = mData;
     }
 
     //滑动，类似于isLongPressDragEnabled
@@ -43,14 +48,20 @@ public class SimpleItemTouchHelperCallback<T extends RecyclerView.Adapter,V> ext
     //当item拖拽开始时调用
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
+            viewHolder.itemView.setBackgroundColor(Color.rgb(176,224,230));
+            ViewGroup.LayoutParams params=viewHolder.itemView.getLayoutParams();
+            params.height=180;
+            viewHolder.itemView.setLayoutParams(params);
+        }
         super.onSelectedChanged(viewHolder, actionState);
     }
 
     //当item拖拽完成时调用
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        viewHolder.itemView.setTranslationX(0);
-        //super.clearView(recyclerView, viewHolder);
+        restoreView(viewHolder);
+        super.clearView(recyclerView, viewHolder);
     }
 
     //当item视图变化时调用
@@ -79,7 +90,7 @@ public class SimpleItemTouchHelperCallback<T extends RecyclerView.Adapter,V> ext
             }
             olddX = dX;
         }
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY,actionState, isCurrentlyActive);
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
     }
 
@@ -113,7 +124,16 @@ public class SimpleItemTouchHelperCallback<T extends RecyclerView.Adapter,V> ext
         int to = target.getAdapterPosition();
         swapListPosition(from, to);
         mAdapter.notifyItemMoved(from, to);//更新适配器中item的位置
+        mAdapter.notifyDataSetChanged();
+        //restoreView(viewHolder);
         return true;
+    }
+
+    private void restoreView(RecyclerView.ViewHolder viewHolder) {
+        viewHolder.itemView.setBackgroundColor(0);
+        ViewGroup.LayoutParams params=viewHolder.itemView.getLayoutParams();
+        params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+        viewHolder.itemView.setLayoutParams(params);
     }
 
     //这里处理滑动删除
@@ -124,7 +144,6 @@ public class SimpleItemTouchHelperCallback<T extends RecyclerView.Adapter,V> ext
             //direction 刷新ViewHolder的方向——
             mSwipeState.onMoveConsummation(viewHolder, direction);
         }
-
     }
 
     /**

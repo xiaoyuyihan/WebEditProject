@@ -47,6 +47,7 @@ public class HtmlTextBean implements Parcelable {
         HtmlLabelList = TypeConverUtil.intToList(in);
         hyperlinks = in.readString();
         mHtmlText = in.readString();
+        mText = new StringBuffer(in.readString());
     }
 
     public static final Creator<HtmlTextBean> CREATOR = new Creator<HtmlTextBean>() {
@@ -316,5 +317,6 @@ public class HtmlTextBean implements Parcelable {
         dest.writeIntArray(TypeConverUtil.listToInt(HtmlLabelList));
         dest.writeString(hyperlinks);
         dest.writeString(mHtmlText);
+        dest.writeString(mText.toString());
     }
 }

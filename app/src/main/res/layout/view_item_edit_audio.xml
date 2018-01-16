@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/black_50"
+    android:background="@color/powderBlue"
     android:layout_marginBottom="4dp"
     android:layout_height="80dp">
 
@@ -24,6 +24,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
+        android:textColor="@color/white"
         android:padding="4dp"
         android:textSize="12sp"
         android:id="@+id/view_item_edit_audio_top" />
